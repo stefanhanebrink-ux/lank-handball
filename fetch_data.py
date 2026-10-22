@@ -56,9 +56,9 @@ def http_json(url):
         },
     )
     last = None
-    for attempt in range(3):
+    for attempt in range(2):
         try:
-            with urllib.request.urlopen(req, timeout=30) as r:
+            with urllib.request.urlopen(req, timeout=15) as r:
                 raw = r.read().decode("utf-8", "replace")
             return json.loads(raw), raw
         except Exception as e:  # noqa: BLE001
@@ -256,12 +256,15 @@ def main():
         f"{sum(1 for m in matches if m['hs'] is not None)} gespielt")
 
     def write_debug():
-        with open("site/debug.txt", "w", encoding="utf-8") as f:
-            f.write("\n".join(DEBUG) + "\n\nRohdaten-Auszug (erstes Team mit Antwort):\n")
-            for tid, s in samples.items():
-                if s:
-                    f.write(f"--- Team {tid} ---\n{s}\n")
-                    break
+        import html as _h
+        parts = ["\n".join(DEBUG), "", "Rohdaten-Auszug (erstes Team mit Antwort):"]
+        for tid, smp in samples.items():
+            if smp:
+                parts.append(f"--- Team {tid} ---\n{smp}")
+                break
+        with open("site/debug.html", "w", encoding="utf-8") as f:
+            f.write("<!doctype html><meta charset='utf-8'><pre style='white-space:pre-wrap'>"
+                    + _h.escape("\n".join(parts)) + "</pre>")
 
     if not mine:
         log("FEHLER: Keine Spiele der Lank erkannt. Das Antwortformat der Schnittstelle weicht ab.")
