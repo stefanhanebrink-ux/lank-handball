@@ -1,0 +1,157 @@
+{
+ "team": "TD Lank 3. Herren",
+ "teamId": 76164,
+ "liga": "2. Bezirksklasse Männer · HK Krefeld-Grenzland · Saison 2026/27",
+ "stand": "22.10.2026, 21:05 Uhr",
+ "teams": [
+  "Adler Königshof 4M",
+  "ASV Rurtal Hückelhoven II",
+  "ASV Süchteln 4M",
+  "Eagles Niederrhein III",
+  "Handball Oppum IV",
+  "TD Lank 3. Herren",
+  "Tschft. Grefrath III",
+  "Tschft. St. Tönis IV",
+  "TuS St. Hubert",
+  "TV Boisheim II",
+  "TV Erkelenz 1860",
+  "VT Kempen II"
+ ],
+ "matches": [
+  {
+   "date": "2026-10-17",
+   "time": "15:15",
+   "home": "TV Boisheim II",
+   "away": "VT Kempen II",
+   "hs": 23,
+   "as": 28,
+   "venue": "Sporthalle Primusschule"
+  },
+  {
+   "date": "2026-10-17",
+   "time": "16:45",
+   "home": "Tschft. St. Tönis IV",
+   "away": "Handball Oppum IV",
+   "hs": 20,
+   "as": 25,
+   "venue": "Sporthalle Corneliusfeld, St. Tönis"
+  },
+  {
+   "date": "2026-10-17",
+   "time": "17:00",
+   "home": "Eagles Niederrhein III",
+   "away": "ASV Süchteln 4M",
+   "hs": 23,
+   "as": 34,
+   "venue": "Enni Sportpark Rheinkamp SPH 2"
+  },
+  {
+   "date": "2026-10-18",
+   "time": "18:00",
+   "home": "TD Lank 3. Herren",
+   "away": "TV Erkelenz 1860",
+   "hs": 42,
+   "as": 31,
+   "venue": "Sporthalle Forstenberg, Lank"
+  },
+  {
+   "date": "2026-10-31",
+   "time": "18:00",
+   "home": "TD Lank 3. Herren",
+   "away": "Handball Oppum IV",
+   "hs": null,
+   "as": null,
+   "venue": "Sporthalle Forstenberg, Lank"
+  },
+  {
+   "date": "2026-11-04",
+   "time": "20:30",
+   "home": "Tschft. Grefrath III",
+   "away": "Adler Königshof 4M",
+   "hs": null,
+   "as": null,
+   "venue": "Sporthalle Königshof"
+  },
+  {
+   "date": "2026-11-15",
+   "time": "18:45",
+   "home": "TD Lank 3. Herren",
+   "away": "Tschft. St. Tönis IV",
+   "hs": null,
+   "as": null,
+   "venue": "Sporthalle Forstenberg, Lank"
+  },
+  {
+   "date": "2026-11-21",
+   "time": "19:30",
+   "home": "TD Lank 3. Herren",
+   "away": "ASV Rurtal Hückelhoven II",
+   "hs": null,
+   "as": null,
+   "venue": "Sporthalle Forstenberg, Lank"
+  },
+  {
+   "date": "2026-11-29",
+   "time": "10:00",
+   "home": "ASV Süchteln 4M",
+   "away": "TD Lank 3. Herren",
+   "hs": null,
+   "as": null,
+   "venue": "Sporthalle Realschule Viersen"
+  },
+  {
+   "date": "2026-12-05",
+   "time": "14:00",
+   "home": "TD Lank 3. Herren",
+   "away": "Tschft. Grefrath III",
+   "hs": null,
+   "as": null,
+   "venue": "Sporthalle Forstenberg, Lank"
+  },
+  {
+   "date": "2026-12-12",
+   "time": "17:15",
+   "home": "VT Kempen II",
+   "away": "TD Lank 3. Herren",
+   "hs": null,
+   "as": null,
+   "venue": "Jahn-Halle, Kempen"
+  },
+  {
+   "date": "2027-01-09",
+   "time": "14:00",
+   "home": "TD Lank 3. Herren",
+   "away": "TuS St. Hubert",
+   "hs": null,
+   "as": null,
+   "venue": "Sporthalle Forstenberg, Lank"
+  },
+  {
+   "date": "2027-01-23",
+   "time": "17:15",
+   "home": "TV Boisheim II",
+   "away": "TD Lank 3. Herren",
+   "hs": null,
+   "as": null,
+   "venue": "Sporthalle Primusschule"
+  },
+  {
+   "date": "2027-01-31",
+   "time": "13:15",
+   "home": "Adler Königshof 4M",
+   "away": "TD Lank 3. Herren",
+   "hs": null,
+   "as": null,
+   "venue": "Sporthalle Königshof"
+  },
+  {
+   "date": "2027-02-14",
+   "time": "18:45",
+   "home": "TD Lank 3. Herren",
+   "away": "Eagles Niederrhein III",
+   "hs": null,
+   "as": null,
+   "venue": "Sporthalle Forstenberg, Lank"
+  }
+ ]
+}

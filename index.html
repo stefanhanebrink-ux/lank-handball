@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1c4fd1">
+<title>TD Lank III Spielplan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: Hallenanzeige oben (nächstes Spiel), darunter drei Reiter: Spiele, Auswertung, Tabelle. Phone first. */
+:root{
+  --bg:#f2f4f8; --surface:#ffffff; --fg:#0e1a30; --muted:#5a6783; --line:#dbe0ea;
+  --accent:#1c4fd1; --accent-ink:#ffffff; --win:#13795b; --loss:#c0362c; --draw:#8a6a12; --hl:#e8eefc;
+  --display:'Barlow Condensed','Arial Narrow',Arial,sans-serif; --body:'Barlow',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b1220; --surface:#141d31; --fg:#e8edf8; --muted:#97a3bd; --line:#26324c;
+  --accent:#6b93ff; --accent-ink:#0b1220; --win:#43c59a; --loss:#ff7b70; --draw:#e0b955; --hl:#1b2a4d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1220; --surface:#141d31; --fg:#e8edf8; --muted:#97a3bd; --line:#26324c;
+  --accent:#6b93ff; --accent-ink:#0b1220; --win:#43c59a; --loss:#ff7b70; --draw:#e0b955; --hl:#1b2a4d; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.45;
+  padding-block:12px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:.01em}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.top h1{font-size:30px;font-weight:700;line-height:1.05}
+.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.stand{color:var(--muted);font-size:12px;text-align:right}
+.next{background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:16px;display:grid;gap:10px}
+.next .lab{font-family:var(--display);font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:13px;opacity:.85}
+.next .vs{font-family:var(--display);font-weight:700;font-size:28px;line-height:1.1}
+.next .meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:14px}
+.count{font-family:var(--display);font-weight:700;font-size:44px;line-height:1;font-variant-numeric:tabular-nums}
+.count small{font-size:15px;font-weight:600;letter-spacing:.04em;margin-left:6px;opacity:.85}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line)}
+.tab{appearance:none;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:.04em;text-transform:uppercase;padding:8px 10px 6px;cursor:pointer;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--accent)}
+.tab:focus-visible,.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:5px 12px;font:500 13px var(--body);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.list{display:flex;flex-direction:column;gap:10px}
+.month{font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.game{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;grid-template-columns:56px 1fr auto;gap:2px 12px;align-items:center}
+.game .d{grid-row:span 2;font-family:var(--display);text-align:center;line-height:1}
+.game .d b{display:block;font-size:30px;font-weight:700}
+.game .d span{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.game .t{font-weight:600;min-width:0;overflow-wrap:anywhere}
+.game .t em{font-style:normal;color:var(--muted);font-weight:500}
+.game .s{font-family:var(--display);font-weight:700;font-size:26px;font-variant-numeric:tabular-nums;grid-row:span 2;text-align:right}
+.game .sub{font-size:13px;color:var(--muted);min-width:0;overflow-wrap:anywhere}
+.badge{display:inline-block;font:600 11px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:2px;border:1px solid currentColor}
+.W{color:var(--win)}.L{color:var(--loss)}.D{color:var(--draw)}
+.game.mine{border-left:4px solid var(--accent)}
+.sum{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.sum div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 8px;text-align:center}
+.sum b{display:block;font-family:var(--display);font-size:28px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.sum span{font-size:12px;color:var(--muted)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px}
+.panel h3{font-size:19px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.form{display:flex;gap:6px}
+.dot{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:700 14px var(--display);color:#fff}
+.dot.W{background:var(--win)}.dot.L{background:var(--loss)}.dot.D{background:var(--draw)}
+.dot.W,.dot.L,.dot.D{color:#fff}
+.hint{color:var(--muted);font-size:13px;margin:0}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:7px 6px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font:600 12px var(--body);color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+th:nth-child(2),td:nth-child(2){text-align:left;white-space:normal;min-width:130px}
+th:first-child,td:first-child{text-align:center;width:28px}
+tr.me td{background:var(--hl);font-weight:600}
+td.pk{font-weight:700}
+svg text{fill:var(--fg);font-family:var(--body)}
+.legend{display:flex;gap:14px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.foot{color:var(--muted);font-size:12px}
+[hidden]{display:none!important}
+</style>
+<style>html{color-scheme:light}body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>TD Lank 3. Herren</h1>
+      <p id="liga"></p>
+    </div>
+    <div class="stand" id="stand"></div>
+  </div>
+
+  <section class="next" id="next" aria-live="polite"></section>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="t-spiele" aria-selected="true" data-tab="spiele">Spiele</button>
+    <button class="tab" role="tab" id="t-auswertung" aria-selected="false" data-tab="auswertung">Auswertung</button>
+    <button class="tab" role="tab" id="t-tabelle" aria-selected="false" data-tab="tabelle">Tabelle</button>
+  </div>
+
+  <section id="spiele">
+    <div class="chips" style="margin-bottom:12px">
+      <button class="chip" id="f-team" aria-pressed="true">Nur unser Team</button>
+      <button class="chip" id="f-liga" aria-pressed="false">Ganze Liga</button>
+    </div>
+    <div class="list" id="gamelist"></div>
+  </section>
+
+  <section id="auswertung" hidden></section>
+
+  <section id="tabelle" hidden>
+    <div class="panel">
+      <h3>Tabelle</h3>
+      <div class="scroll"><table id="tbl"></table></div>
+      <p class="hint" id="tblhint"></p>
+    </div>
+  </section>
+
+  <p class="foot">Daten: handball.net, Spielklasse 2. BK Männer (HK Krefeld-Grenzland). Die Seite wird regelmäßig automatisch aktualisiert. Die Tabelle wird aus den erfassten Ergebnissen berechnet und kann von der offiziellen Tabelle abweichen.</p>
+</div>
+
+
+<script id="data" type="application/json">
+{
+  "team": "TD Lank 3. Herren",
+  "teamId": 76164,
+  "liga": "2. Bezirksklasse Männer · HK Krefeld-Grenzland · Saison 2026/27",
+  "stand": "22.10.2026, 21:05 Uhr",
+  "teams": ["Adler Königshof 4M","ASV Rurtal Hückelhoven II","ASV Süchteln 4M","Eagles Niederrhein III","Handball Oppum IV","TD Lank 3. Herren","Tschft. Grefrath III","Tschft. St. Tönis IV","TuS St. Hubert","TV Boisheim II","TV Erkelenz 1860","VT Kempen II"],
+  "matches": [
+    {"date":"2026-10-17","time":"15:15","home":"TV Boisheim II","away":"VT Kempen II","hs":23,"as":28,"venue":"Sporthalle Primusschule"},
+    {"date":"2026-10-17","time":"16:45","home":"Tschft. St. Tönis IV","away":"Handball Oppum IV","hs":20,"as":25,"venue":"Sporthalle Corneliusfeld, St. Tönis"},
+    {"date":"2026-10-17","time":"17:00","home":"Eagles Niederrhein III","away":"ASV Süchteln 4M","hs":23,"as":34,"venue":"Enni Sportpark Rheinkamp SPH 2"},
+    {"date":"2026-10-18","time":"18:00","home":"TD Lank 3. Herren","away":"TV Erkelenz 1860","hs":42,"as":31,"venue":"Sporthalle Forstenberg, Lank"},
+    {"date":"2026-10-31","time":"18:00","home":"TD Lank 3. Herren","away":"Handball Oppum IV","hs":null,"as":null,"venue":"Sporthalle Forstenberg, Lank"},
+    {"date":"2026-11-04","time":"20:30","home":"Tschft. Grefrath III","away":"Adler Königshof 4M","hs":null,"as":null,"venue":"Sporthalle Königshof"},
+    {"date":"2026-11-15","time":"18:45","home":"TD Lank 3. Herren","away":"Tschft. St. Tönis IV","hs":null,"as":null,"venue":"Sporthalle Forstenberg, Lank"},
+    {"date":"2026-11-21","time":"19:30","home":"TD Lank 3. Herren","away":"ASV Rurtal Hückelhoven II","hs":null,"as":null,"venue":"Sporthalle Forstenberg, Lank"},
+    {"date":"2026-11-29","time":"10:00","home":"ASV Süchteln 4M","away":"TD Lank 3. Herren","hs":null,"as":null,"venue":"Sporthalle Realschule Viersen"},
+    {"date":"2026-12-05","time":"14:00","home":"TD Lank 3. Herren","away":"Tschft. Grefrath III","hs":null,"as":null,"venue":"Sporthalle Forstenberg, Lank"},
+    {"date":"2026-12-12","time":"17:15","home":"VT Kempen II","away":"TD Lank 3. Herren","hs":null,"as":null,"venue":"Jahn-Halle, Kempen"},
+    {"date":"2027-01-09","time":"14:00","home":"TD Lank 3. Herren","away":"TuS St. Hubert","hs":null,"as":null,"venue":"Sporthalle Forstenberg, Lank"},
+    {"date":"2027-01-23","time":"17:15","home":"TV Boisheim II","away":"TD Lank 3. Herren","hs":null,"as":null,"venue":"Sporthalle Primusschule"},
+    {"date":"2027-01-31","time":"13:15","home":"Adler Königshof 4M","away":"TD Lank 3. Herren","hs":null,"as":null,"venue":"Sporthalle Königshof"},
+    {"date":"2027-02-14","time":"18:45","home":"TD Lank 3. Herren","away":"Eagles Niederrhein III","hs":null,"as":null,"venue":"Sporthalle Forstenberg, Lank"}
+  ]
+}
+</script>
+<script>
+function run(D){
+  var ME = D.team;
+  var M = D.matches.map(function(m){
+    m.dt = new Date(m.date+'T'+m.time+':00');
+    m.played = m.hs !== null && m.as !== null;
+    m.mine = m.home===ME || m.away===ME;
+    return m;
+  }).sort(function(a,b){return a.dt-b.dt});
+
+  function el(id){return document.getElementById(id)}
+  function fmtDay(d){return d.toLocaleDateString('de-DE',{weekday:'short'})}
+  function fmtMonth(d){return d.toLocaleDateString('de-DE',{month:'long',year:'numeric'})}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+  el('liga').textContent = D.liga;
+  el('stand').textContent = 'Stand: ' + D.stand;
+
+  // Ergebnis aus Sicht von Lank
+  function view(m){
+    var home = m.home===ME;
+    var f = home?m.hs:m.as, a = home?m.as:m.hs;
+    var r = f>a?'W':(f<a?'L':'D');
+    return {home:home,f:f,a:a,r:r,opp:home?m.away:m.home};
+  }
+  var mine = M.filter(function(m){return m.mine});
+  var playedMine = mine.filter(function(m){return m.played});
+  var upcoming = mine.filter(function(m){return !m.played});
+
+  // Nächstes Spiel
+  (function(){
+    var box = el('next');
+    var n = upcoming.filter(function(m){return m.dt >= new Date(Date.now()-2*3600*1000)})[0] || upcoming[0];
+    if(!n){box.innerHTML='<div class="lab">Saison</div><div class="vs">Keine weiteren Spiele angesetzt</div>';return}
+    var v = view(n);
+    var days = Math.ceil((n.dt - new Date())/86400000);
+    var cd = days<=0 ? 'Heute' : (days===1 ? 'Morgen' : 'in '+days+' Tagen');
+    box.innerHTML = '<div class="lab">Nächstes Spiel · '+(v.home?'Heimspiel':'Auswärts')+'</div>'+
+      '<div class="vs">'+esc(n.home)+' – '+esc(n.away)+'</div>'+
+      '<div class="count">'+cd+'</div>'+
+      '<div class="meta"><span>'+fmtDay(n.dt)+', '+n.dt.toLocaleDateString('de-DE')+' · '+n.time+' Uhr</span><span>'+esc(n.venue)+'</span></div>';
+  })();
+
+  // Spiele
+  var onlyTeam = true;
+  function renderGames(){
+    var list = el('gamelist'); var html=''; var lastMonth='';
+    var arr = M.filter(function(m){return onlyTeam?m.mine:true});
+    var now = new Date();
+    // erst Ergebnisse (neueste zuerst), dann Anstehende
+    var past = arr.filter(function(m){return m.played}).sort(function(a,b){return b.dt-a.dt});
+    var fut = arr.filter(function(m){return !m.played}).sort(function(a,b){return a.dt-b.dt});
+    function card(m){
+      var t='', badge='';
+      var s = m.played ? (m.hs+' : '+m.as) : m.time;
+      var cls = 'game'+(m.mine?' mine':'');
+      if(m.mine && m.played){var v=view(m); badge='<span class="badge '+v.r+'">'+({W:'Sieg',L:'Niederlage',D:'Remis'})[v.r]+'</span>'}
+      var home = m.home===ME?'<strong>'+esc(m.home)+'</strong>':esc(m.home);
+      var away = m.away===ME?'<strong>'+esc(m.away)+'</strong>':esc(m.away);
+      return '<div class="'+cls+'"><div class="d"><b>'+m.dt.getDate()+'</b><span>'+fmtDay(m.dt)+'</span></div>'+
+        '<div class="t">'+home+' <em>–</em> '+away+badge+'</div>'+
+        '<div class="s">'+s+'</div>'+
+        '<div class="sub">'+(m.played?'':m.time+' Uhr · ')+esc(m.venue)+'</div></div>';
+    }
+    if(fut.length){
+      html+='<div class="month">Anstehend</div>';
+      fut.forEach(function(m){
+        var mo=fmtMonth(m.dt);
+        if(mo!==lastMonth){html+='<div class="month" style="margin-top:4px;text-transform:none;letter-spacing:.02em;font-size:14px">'+mo+'</div>';lastMonth=mo}
+        html+=card(m);
+      });
+    }
+    if(past.length){html+='<div class="month">Ergebnisse</div>';past.forEach(function(m){html+=card(m)})}
+    if(!html) html='<p class="hint">Noch keine Spiele erfasst.</p>';
+    list.innerHTML = html;
+  }
+  renderGames();
+  el('f-team').onclick=function(){onlyTeam=true;el('f-team').setAttribute('aria-pressed','true');el('f-liga').setAttribute('aria-pressed','false');renderGames()};
+  el('f-liga').onclick=function(){onlyTeam=false;el('f-liga').setAttribute('aria-pressed','true');el('f-team').setAttribute('aria-pressed','false');renderGames()};
+
+  // Auswertung
+  (function(){
+    var box = el('auswertung');
+    var w=0,u=0,n=0,gf=0,ga=0;
+    var home={s:0,u:0,n:0,gf:0,ga:0,g:0}, away={s:0,u:0,n:0,gf:0,ga:0,g:0};
+    var series = playedMine.slice().sort(function(a,b){return a.dt-b.dt}).map(function(m){
+      var v=view(m); gf+=v.f; ga+=v.a;
+      if(v.r==='W')w++; else if(v.r==='D')u++; else n++;
+      var h=v.home?home:away; h.g++; h.gf+=v.f; h.ga+=v.a;
+      if(v.r==='W')h.s++; else if(v.r==='D')h.u++; else h.n++;
+      return {v:v,m:m};
+    });
+    var g = series.length;
+    var h = '';
+    h+='<div class="sum"><div><b>'+g+'</b><span>Spiele</span></div><div><b>'+w+'-'+u+'-'+n+'</b><span>S-U-N</span></div><div><b>'+gf+':'+ga+'</b><span>Tore</span></div><div><b>'+(gf-ga>0?'+':'')+(gf-ga)+'</b><span>Differenz</span></div></div>';
+    h+='<div style="display:grid;gap:12px;margin-top:12px">';
+    if(g===0){
+      h+='<div class="panel"><h3>Noch keine Auswertung</h3><p class="hint">Sobald das erste Spiel gespielt ist, erscheinen hier Bilanz, Formkurve und Torstatistik.</p></div>';
+    } else {
+      h+='<div class="panel"><h3>Formkurve</h3><div class="form">'+series.slice(-5).map(function(x){return '<span class="dot '+x.v.r+'" title="'+esc(x.v.opp)+'">'+({W:'S',L:'N',D:'U'})[x.v.r]+'</span>'}).join('')+'</div><p class="hint">Letzte '+Math.min(5,g)+' Spiele, ältestes links.</p></div>';
+      h+='<div class="panel"><h3>Tore pro Spiel</h3>'+goalsChart(series)+'<div class="legend"><span><i style="background:var(--accent)"></i>Erzielt</span><span><i style="background:var(--loss)"></i>Kassiert</span></div>'+
+         '<p class="hint">Ø '+(gf/g).toFixed(1).replace('.',',')+' erzielt, Ø '+(ga/g).toFixed(1).replace('.',',')+' kassiert pro Spiel.</p></div>';
+      h+='<div class="panel"><h3>Heim und Auswärts</h3><div class="scroll"><table><tr><th></th><th></th><th>Sp</th><th>S-U-N</th><th>Tore</th></tr>'+
+         ['Heim','Auswärts'].map(function(lbl,i){var x=i?away:home;return '<tr><td></td><td>'+lbl+'</td><td>'+x.g+'</td><td>'+x.s+'-'+x.u+'-'+x.n+'</td><td>'+x.gf+':'+x.ga+'</td></tr>'}).join('')+
+         '</table></div></div>';
+    }
+    var hl = upcoming.filter(function(m){return m.home===ME}).length, aw = upcoming.length-hl;
+    h+='<div class="panel"><h3>Restprogramm</h3><p style="margin:0"><b>'+upcoming.length+'</b> Spiele offen: <b>'+hl+'</b> zu Hause, <b>'+aw+'</b> auswärts.</p><p class="hint">'+mine.length+' Spiele der Saison sind erfasst, '+playedMine.length+' davon gespielt.</p></div>';
+    h+='</div>';
+    box.innerHTML = h;
+  })();
+
+  function goalsChart(series){
+    var W=360, rowH=46, padL=96, padR=34, H=series.length*rowH+8;
+    var max=1; series.forEach(function(x){max=Math.max(max,x.v.f,x.v.a)});
+    var sc=(W-padL-padR)/max, s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Tore pro Spiel">';
+    series.forEach(function(x,i){
+      var y=i*rowH+6, d=x.m.dt.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
+      var name=x.v.opp.length>14?x.v.opp.slice(0,13)+'…':x.v.opp;
+      s+='<text x="0" y="'+(y+13)+'" font-size="12" font-weight="600">'+esc(name)+'</text>';
+      s+='<text x="0" y="'+(y+28)+'" font-size="11" style="fill:var(--muted)">'+d+(x.v.home?' · Heim':' · Ausw.')+'</text>';
+      s+='<rect x="'+padL+'" y="'+y+'" width="'+(x.v.f*sc)+'" height="16" rx="3" fill="var(--accent)"/>';
+      s+='<text x="'+(padL+x.v.f*sc+5)+'" y="'+(y+13)+'" font-size="12" font-weight="600">'+x.v.f+'</text>';
+      s+='<rect x="'+padL+'" y="'+(y+19)+'" width="'+(x.v.a*sc)+'" height="16" rx="3" fill="var(--loss)"/>';
+      s+='<text x="'+(padL+x.v.a*sc+5)+'" y="'+(y+32)+'" font-size="12" font-weight="600">'+x.v.a+'</text>';
+    });
+    return s+'</svg>';
+  }
+
+  // Tabelle aus Ergebnissen
+  (function(){
+    var T={}; D.teams.forEach(function(t){T[t]={t:t,sp:0,s:0,u:0,n:0,gf:0,ga:0,p:0}});
+    M.filter(function(m){return m.played}).forEach(function(m){
+      var a=T[m.home]||(T[m.home]={t:m.home,sp:0,s:0,u:0,n:0,gf:0,ga:0,p:0}), b=T[m.away]||(T[m.away]={t:m.away,sp:0,s:0,u:0,n:0,gf:0,ga:0,p:0});
+      a.sp++;b.sp++;a.gf+=m.hs;a.ga+=m.as;b.gf+=m.as;b.ga+=m.hs;
+      if(m.hs>m.as){a.s++;a.p+=2;b.n++} else if(m.hs<m.as){b.s++;b.p+=2;a.n++} else {a.u++;b.u++;a.p++;b.p++}
+    });
+    var rows=Object.keys(T).map(function(k){return T[k]}).sort(function(x,y){
+      return y.p-x.p || (y.gf-y.ga)-(x.gf-x.ga) || y.gf-x.gf || x.t.localeCompare(y.t)});
+    var h='<tr><th>#</th><th>Team</th><th>Sp</th><th>S</th><th>U</th><th>N</th><th>Tore</th><th>Diff</th><th>Pkt</th></tr>';
+    rows.forEach(function(r,i){
+      var d=r.gf-r.ga;
+      h+='<tr'+(r.t===ME?' class="me"':'')+'><td>'+(i+1)+'</td><td>'+esc(r.t)+'</td><td>'+r.sp+'</td><td>'+r.s+'</td><td>'+r.u+'</td><td>'+r.n+'</td><td>'+r.gf+':'+r.ga+'</td><td>'+(d>0?'+':'')+d+'</td><td class="pk">'+r.p+'</td></tr>';
+    });
+    el('tbl').innerHTML=h;
+    el('tblhint').textContent='Berechnet aus '+M.filter(function(m){return m.played}).length+' erfassten Spielen. Sieg zählt 2 Punkte, Remis 1 Punkt.';
+  })();
+
+  // Reiter
+  var tabs=document.querySelectorAll('.tab');
+  function show(name){
+    tabs.forEach(function(t){t.setAttribute('aria-selected',t.dataset.tab===name?'true':'false')});
+    ['spiele','auswertung','tabelle'].forEach(function(id){el(id).hidden=id!==name});
+    try{sessionStorage.setItem('tab',name)}catch(e){}
+  }
+  tabs.forEach(function(t){t.onclick=function(){show(t.dataset.tab)}});
+  try{var s=sessionStorage.getItem('tab'); if(s) show(s)}catch(e){}
+}
+var EMB = JSON.parse(document.getElementById('data').textContent);
+fetch('data.json?' + Date.now(), {cache: 'no-store'})
+  .then(function(r){ if(!r.ok) throw new Error('data'); return r.json(); })
+  .then(run)
+  .catch(function(){ run(EMB); });
+
+</script>
+</body>
+</html>
