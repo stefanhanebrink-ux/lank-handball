@@ -1,11 +1,7 @@
 name: Daten holen und App veröffentlichen
 
 on:
-  schedule:
-    - cron: "23 */3 * * *"
   workflow_dispatch:
-  push:
-    branches: [main]
 
 permissions:
   contents: read
